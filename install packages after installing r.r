@@ -1,5 +1,7 @@
 #last edited at 20191211
 
+update.packages()
+
 list_1=c("ape","dplyr","fastmatch","ggplot2","gtools","magrittr","questionr",
          "readr","rlang","shiny","stringi","stringr","tibble","XML","XiMpLe")
 list_bioconductor=c("Biostrings","msa","S4Vectors","sangerseqR")
@@ -10,3 +12,5 @@ install.packages(pkgs=list_1)
 install.packages(pkgs="BiocManager")
 BiocManager::install(pkgs=list_bioconductor)
 if(FALSE){install.packages(pkgs=list_2);}
+
+rm(list_1,list_2,list_bioconductor)
