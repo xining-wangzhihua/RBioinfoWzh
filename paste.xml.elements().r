@@ -3,7 +3,7 @@
 require(package="gtools")
 require(package="stringr")
 require(package="tibble")
-require(package="XiMpLe")
+require(package="XML")
 source(file="https://github.com/ywd5/r-zm/raw/master/is.valid.xml.tag.name().r")
 
 paste.xml.elements=function(names=character(),attrs=list(),values=list(),pad_start_tag=FALSE){
@@ -78,30 +78,33 @@ paste.xml.elements=function(names=character(),attrs=list(),values=list(),pad_sta
   #>>>main manipulation begin>>>
   result=rep("",times=l)
   if(l>0)for(i in 1:l){
-    ans=XMLNode(name=nms[i],attrs=as.list(attrs[[i]]),.children=values[i])
-    result[i]=pasteXML(obj=ans,shine=0,indent.by="")
-    rm(ans)
+    result[i]=toString( xmlNode(name=nms[i],attrs=attrs[[i]],.children=values[[i]]) )
   }
   if(pad_start_tag){
-    result=str_match(string=result,pattern="^(<[^>]+>)(.*)(</[^>]+>)$")
+    result=str_match(string=result,pattern="^(<[^>]+>)(.*</[^>]+>|)$")
     result=as_tibble(result,.name_repair="minimal")[,-1]
     if(anyNA( result[[1]] )){stop("regular expression bug")}
-    if(!identical( dim(result),as.integer(c(l,3)) )){stop("bug")}
+    if(!identical( dim(result),as.integer(c(l,2)) )){stop("bug")}
     result[[1]]=str_pad(string=result[[1]],width=max(nchar(result[[1]])),side="left")
-    result=paste0(result[[1]],result[[2]],result[[3]])
+    result=paste0(result[[1]],result[[2]])
   }
   #<<<main manipulation end<<<
   rm(nms,attrs,values,pad_start_tag,f_entity_reference,l,i)
   return(result)#rm(result)
 }
 
+
 if(FALSE){
   #here are the test codes
   msu="a";spbu=list("h");itmo=list(c(x="u"));
   msu="a<b";spbu=list("h>i");itmo=list(c(`x&y\'z`="u"));
-  msu=c("a","a>b<c&d'e\"f\\g","a-b")
-  spbu=list("h","h>i<j&k'l\"m\\n",character())
-  itmo=list(c(x="u"),c(x="u",`x>y<z&x'y\"z\\x`="u>v<w&u'v\"w\\u"),character())
-  paste.xml.elements(names=msu,attrs=itmo,values=spbu)
+  msu="a";spbu=list("h");itmo=list(c(x="u"),character());
+  msu="a";spbu=list("h",character());itmo=list(c(x="u"));
+  msu=c("a","b","ab");spbu=list("h",character(),"hi");itmo=list(c(x="u"),c(`xyz`="uvw"),character());
+  msu=c("a","a>b<c&d'e\"f","a-b")
+  spbu=list("h","h>i<j&k'l\"m",character())
+  itmo=list(c(x="u"),c(x="u",`x>y<z&x'y\"z\\x`="u>v<w&u'v\"w"),character())
+  message(paste0( paste.xml.elements(names=msu,attrs=itmo,values=spbu) ,"\n"))
+  message(paste0( paste.xml.elements(names=msu,attrs=itmo,values=spbu,pad_start_tag=TRUE) ,"\n"))
   rm(msu,spbu,itmo)
 }
