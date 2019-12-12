@@ -88,6 +88,7 @@ paste.xml.elements=function(names=character(),attrs=list(),values=list(),pad_sta
     result[[1]]=str_pad(string=result[[1]],width=max(nchar(result[[1]])),side="left")
     result=paste0(result[[1]],result[[2]])
   }
+  result=paste0(result,"\n")
   #<<<main manipulation end<<<
   rm(nms,attrs,values,pad_start_tag,f_entity_reference,l,i)
   return(result)#rm(result)

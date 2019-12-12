@@ -1,5 +1,7 @@
 #last edited at 20191212
 
+require(package="tibble")
+
 hash.to.short.strings=function(names.arg){
   #>>>internal functions begin>>>
   #<<<internal functions end<<<
@@ -13,14 +15,16 @@ hash.to.short.strings=function(names.arg){
   #>>>main manipulation begin>>>
   character_list=c(0:9,letters,LETTERS)
   if(length(names.arg)==0){names.arg=character()}
-  if(length(names.arg)==1){names.arg="0"}
-  if(length(names.arg)>1){
+  if(length(names.arg)!=0)if(length(unique(names.arg))==1){
+    names.arg=rep("0",times=length(names.arg))
+  }
+  if(length(names.arg)!=0)if(length(unique(names.arg))!=1){
     names.arg=match(x=names.arg,table=unique(names.arg))
     l=max(names.arg)
     #
     ans=ceiling( log(x=l,base=length(character_list)) )
     ans=rep(list(character_list),times=ans)
-    ans=rev( expand.grid(ans,KEEP.OUT.ATTRS=FALSE,stringsAsFactors=FALSE) )
+    ans=as_tibble(rev( expand.grid(ans,KEEP.OUT.ATTRS=FALSE,stringsAsFactors=FALSE) ))
     ans=ans[1:l,]
     for(i in 1:l){ans[i,1]=paste0(ans[i,],collapse="");}
     ans=ans[[1]]

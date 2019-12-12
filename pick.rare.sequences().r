@@ -9,6 +9,7 @@ require(package="stringr")
 require(package="questionr")
 require(package="XML")
 source(file="https://github.com/ywd5/r-zm/raw/master/paste.xml.elements().r")
+source(file="https://github.com/ywd5/r-zm/raw/master/hash.to.short.strings().r")
 #meta-data, retrench, exaltation, affinage, succinct, terse,brief, prune,curtail, truncate, abridge
 
 pick.rare.sequences=function(xss,residue_index_start_from=1){
@@ -100,8 +101,7 @@ pick.rare.sequences=function(xss,residue_index_start_from=1){
   l[4]=ncol(residue$interested)
   #<<<calculate xss$interested_entry and xss$interested end<<<
   #>>>calculate xss$sequence_hash begin>>>
-  info$sequence_hash=f_paste_byrow(df=residue$interested) %>% match(x=.,table=unique(.))
-  info$sequence_hash=paste0("x",info$sequence_hash)
+  info$sequence_hash=f_paste_byrow(df=residue$interested) %>% hash.to.short.strings()
   #<<<calculate xss$sequence_hash end<<<
   #>>>merge number of same sequences into weight begin>>>
   msu=split(x=1:l[1],f=info$sequence_hash) %>% unname()
@@ -125,13 +125,7 @@ pick.rare.sequences=function(xss,residue_index_start_from=1){
   }
   if(l[4]==1){residue$complementary_hash[[1]]="";}
   #
-  for(i in 1:l[4]){
-    ans=residue$complementary_hash[[i]]
-    ans=match(x=ans,table=unique(ans))
-    ans=paste0("x",ans)
-    residue$complementary_hash[[i]]=ans
-    rm(ans)
-  }
+  for(i in 1:l[4]){residue$complementary_hash[[i]]=hash.to.short.strings(residue$complementary_hash[[i]]);}
   #<<<calculate xss$complementary_hash end<<<
   #>>>calculate the 3 frequencies begin>>>
   blank_tibble=matrix(data="",nrow=l[2],ncol=l[4]) %>% as_tibble(.name_repair="minimal")
@@ -142,18 +136,16 @@ pick.rare.sequences=function(xss,residue_index_start_from=1){
     msu=questionr::wtd.table(x=itmo,weights=info$weight)
     msu=setNames(object=as.integer(msu),nm=names(msu))
     spbu=setNames(object=rep("",times=length(msu)),nm=names(msu))
-    for(j in 1:length(msu)){
-      spbu[j]=paste0(as.integer(msu[-j]),names(msu[-j])) %>% paste0(collapse=",")
-    }
+    for(j in 1:length(msu)){spbu[j]=paste0(as.integer(msu[-j]),names(msu[-j]),collapse=", ");}
     #
-    datum$frequency[[i]]=msu[itmo] %>% unname
-    datum$other_frequencies[[i]]=spbu[itmo] %>% unname
+    datum$frequency[[i]]=msu[itmo] %>% unname()
+    datum$other_frequencies[[i]]=spbu[itmo] %>% unname()
     rm(itmo,msu,spbu)
   }
   for(i in 1:l[4]){
     itmo=residue$complementary_hash[[i]]
     msu=questionr::wtd.table(x=itmo,weights=info$weight)
-    datum$complementary_frequency[[i]]=msu[itmo] %>% unname
+    datum$complementary_frequency[[i]]=msu[itmo] %>% unname()
     rm(itmo,msu)
   }
   #<<<calculate the 3 frequencies end<<<
@@ -207,7 +199,7 @@ pick.rare.sequences=function(xss,residue_index_start_from=1){
     print_vector$file_name[i]=paste0(print_vector$file_name[i],"; ",paste0(info$id[[i]],collapse=", "))
   }
   ans=f_create_directory(prefix=paste0("residue index start from ",risf))
-  print_vector$file_name=paste0(ans,"/",1:l[2],"; ",print_vector$file_name,".txt")
+  print_vector$file_name=paste0(ans,"/",1:l[2],"; ",print_vector$file_name,".xml")
   ans=file.create(print_vector$file_name)
   if(!all(ans)){stop("can't create text files. this may due to too long file names.")}
   rm(ans)
@@ -224,9 +216,6 @@ pick.rare.sequences=function(xss,residue_index_start_from=1){
   print_vector$small=paste.xml.elements(names="small_frequencies_of",values=as.list(print_vector$small))
   print_vector$big=paste.xml.elements(names="big_frequencies_without",values=as.list(print_vector$big))
   print_vector$id=paste.xml.elements(names="sequence_ids",values=as.list(print_vector$id))
-  print_vector$small=paste0(print_vector$small,"\n")
-  print_vector$big=paste0(print_vector$big,"\n")
-  print_vector$id=paste0(print_vector$id,"\n")
   #<<<generate print_vector end<<<
   #>>>generate print_matrix begin>>>
   print_matrix=matrix(data="",nrow=l[5],ncol=l[4]) %>% as_tibble(.name_repair="minimal")
@@ -248,7 +237,7 @@ pick.rare.sequences=function(xss,residue_index_start_from=1){
   for(i in 1:l[2]){
     ans=blank
     ans[residue_entry]=print_matrix[[i]]
-    print_matrix[[i]]=f_paste_byrow(df=ans) %>% paste0("~",.,"~")
+    print_matrix[[i]]=f_paste_byrow(df=ans)
     rm(ans)
   }
   rm(blank)
@@ -261,14 +250,14 @@ pick.rare.sequences=function(xss,residue_index_start_from=1){
     ans=spbu
     ans[[3]]["min"]=paste0(" ",info$small$min[i],"@",info$small$min_site[i]," ")
     ans[[5]]["max"]=paste0(" ",info$big$max[i],"@",info$big$max_site[i]," ")
-    print_matrix[[i]]=paste.xml.elements(names=msu,attrs=ans,values=as.list(print_matrix[[i]]),
-                                         pad_start_tag=TRUE) %>% paste0("\n")
+    print_matrix[[i]]=paste.xml.elements(names=msu,attrs=ans,
+                                         values=as.list(print_matrix[[i]]),pad_start_tag=TRUE)
     rm(ans)
   }
   #<<<generate print_matrix end<<<
   #>>>export print_vector and print_matrix begin>>>
   for(i in 1:l[2]){
-    cat(print_vector$small[i],print_vector$big[i],print_vector$id[i],print_matrix[[i]],
+    cat("<root>",print_vector$small[i],print_vector$big[i],print_vector$id[i],print_matrix[[i]],"</root>",
         file=print_vector$file_name[i],sep="",append=FALSE)
   }
   message("\n\nthe following files are created:\n",paste0(print_vector$file_name,collase="\n"),"\n\n")
