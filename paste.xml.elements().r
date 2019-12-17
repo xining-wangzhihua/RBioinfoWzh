@@ -1,16 +1,15 @@
 #last edited at 20191212
 
-require(package="gtools")
-require(package="stringr")
-require(package="tibble")
-require(package="XML")
-source(file="https://github.com/ywd5/r-zm/raw/master/is.valid.xml.tag.name().r")
-
 paste.xml.elements=function(names=character(),attrs=list(),values=list(),pad_start_tag=FALSE){
   x="names, attrs, values must be of same length (or length 1 to be replicated)"
   rm(x)#x serves as annotation
   nms=names;rm(names);
-  #>>>internal functions begin>>>
+  #>>>r package dependency, function dependency, internal functions begin>>>
+  library(package="gtools")
+  library(package="stringr")
+  library(package="tibble")
+  library(package="XML")
+  source(file="https://github.com/ywd5/r-zm/raw/master/is.valid.xml.tag.name().r")
   f_entity_reference=function(va){
     #for internal usage only, input validity isn't checked
     va=gsub(pattern="&",replacement="&amp;",x=va,fixed=TRUE)
@@ -20,7 +19,7 @@ paste.xml.elements=function(names=character(),attrs=list(),values=list(),pad_sta
     va=gsub(pattern="\"",replacement="&quot;",x=va,fixed=TRUE)
     return(va)#rm(va)
   }
-  #<<<internal functions end<<<
+  #<<<r package dependency, function dependency, internal functions end<<<
   #>>>control the structure of names, attrs and values begin>>>
   if(!is.vector(nms)|is.list(nms)){stop("names must be a character vector.")}
   if(!is.list(attrs)){stop("attrs must be a list.")}

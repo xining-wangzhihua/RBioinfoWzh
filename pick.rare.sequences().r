@@ -2,20 +2,20 @@
 
 #a function to calculate the frequencies of segregating sites in sequences
 
-require(package="Biostrings")
-require(package="tibble")
-require(package="magrittr")
-require(package="stringr")
-require(package="questionr")
-require(package="XML")
-source(file="https://github.com/ywd5/r-zm/raw/master/paste.xml.elements().r")
-source(file="https://github.com/ywd5/r-zm/raw/master/hash.to.short.strings().r")
 #meta-data, retrench, exaltation, affinage, succinct, terse,brief, prune,curtail, truncate, abridge
 
 pick.rare.sequences=function(xss,residue_index_start_from=1){
   risf=residue_index_start_from
   rm(residue_index_start_from)
-  #>>>internal functions begin>>>
+  #>>>r package dependency, function dependency, internal functions begin>>>
+  library(package="Biostrings")
+  library(package="tibble")
+  library(package="magrittr")
+  library(package="stringr")
+  library(package="questionr")
+  library(package="XML")
+  source(file="https://github.com/ywd5/r-zm/raw/master/paste.xml.elements().r")
+  source(file="https://github.com/ywd5/r-zm/raw/master/hash.to.short.strings().r")
   f_paste_byrow=function(df){
     #for internal usage only
     l=dim(df)
@@ -44,7 +44,7 @@ pick.rare.sequences=function(xss,residue_index_start_from=1){
     dir.create(path=zm)
     return(zm)#rm(prefix,zm)
   }
-  #<<<internal functions end<<<
+  #<<<r package dependency, function dependency, internal functions end<<<
   #>>>control the input of xss begin>>>
   if(is.null(xss)){stop("\"xss\" can't be NULL.")}
   if(!is(object=xss,class2="XStringSet")){stop("\"xss\" must be an XStringSet.")}

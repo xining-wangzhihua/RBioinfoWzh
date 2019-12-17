@@ -1,10 +1,9 @@
 #last edited at 20191212
 
-require(package="tibble")
-
 hash.to.short.strings=function(names.arg){
-  #>>>internal functions begin>>>
-  #<<<internal functions end<<<
+  #>>>r package dependency, function dependency, internal functions begin>>>
+  library("tibble")
+  #<<<r package dependency, function dependency, internal functions end<<<
   #>>>control the input of names.arg and same_nchar begin>>>
   if(is.null(names.arg)){stop("\"names.arg\" can't be NULL.")}
   if(is.factor(names.arg)){names.arg=as.vector(names.arg);}
