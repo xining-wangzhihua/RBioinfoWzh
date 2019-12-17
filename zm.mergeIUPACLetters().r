@@ -5,7 +5,6 @@
 zm.mergeIUPACLetters=function(seq1,seq2){
   #>>>r package dependency, function dependency, internal functions begin>>>
   library(Biostrings)
-  library(tibble)
   library(magrittr)
   #<<<r package dependency, function dependency, internal functions end<<<
   #>>>control the input of seq1 and seq2 begin>>>
