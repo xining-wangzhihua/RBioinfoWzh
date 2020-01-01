@@ -2,8 +2,9 @@
 
 #a function to transpose an XStringSet object like a matrix.
 
+library(Biostrings)
+
 t.XStringSet=function(xss){
-  library(Biostrings)
   #>>>control the input of xss begin>>>
   if(!is(object=xss,class2="XStringSet")){stop("xss must be an XStringSet object.")}
   if(length(xss)==0){stop("length(xss) can't be 0.")}
