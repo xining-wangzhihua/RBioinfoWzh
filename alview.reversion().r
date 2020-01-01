@@ -68,7 +68,7 @@ alview.reversion=function(strings){
     tulip=t.XStringSet(xss=strings)
     for(i in 1:length(tulip)){
       dahlia=as.character(tulip[[i]])
-      if(str_count(string=dahlia,pattern=substr(dahlia,1,1))>1){
+      if(substr(dahlia,1,1)!="-")if(str_count(string=dahlia,pattern=substr(dahlia,1,1))>1){
         stop("characters in other sequences (use \".\" if same) can't be same with the 1st sequence.")
       }
       tulip[[i]]=chartr(old=".",new=substr(dahlia,1,1),x=dahlia) %>% metainfo$fString()
