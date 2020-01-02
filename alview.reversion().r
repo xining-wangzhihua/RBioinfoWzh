@@ -41,7 +41,7 @@ alview.reversion=function(strings){
   for(i in 1:metainfo$nrow){
     ans=as.character(strings[[i]]) %>% str_match(pattern="^([^ ]+ +)([^ ]+)$") %>% .[,-1]
     if(is.na(ans[1])){stop("strings can't match on the valid pattern of result of ape::alview().")}
-    tempo[i]=ans[1];strings[[i]]=BString(toupper(ans[2]))
+    tempo[i]=ans[1];strings[i]=toupper(ans[2])
     rm(ans)
   }
   if(nchar(tempo) %>% unique() %>% length()!=1){stop("sequence lengths in strings must be same.")}
@@ -71,7 +71,7 @@ alview.reversion=function(strings){
       if(substr(dahlia,1,1)!="-")if(str_count(string=dahlia,pattern=substr(dahlia,1,1))>1){
         stop("characters in other sequences (use \".\" if same) can't be same with the 1st sequence.")
       }
-      tulip[[i]]=chartr(old=".",new=substr(dahlia,1,1),x=dahlia) %>% metainfo$fString()
+      tulip[i]=chartr(old=".",new=substr(dahlia,1,1),x=dahlia)
       rm(dahlia)
     }
     strings=t.XStringSet(xss=tulip) %>% setNames(object=.,nm=names(strings))

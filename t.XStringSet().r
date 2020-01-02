@@ -16,7 +16,7 @@ t.XStringSet=function(xss){
   l=nchar(xss[[1]])
   result=rep(replace(x=xss[1],list=1,values=""),times=l)
   for(i in 1:l){
-    result[[i]]=paste0(as.character(subseq(x=xss,start=i,end=i)),collapse="")
+    result[i]=paste0(as.character(subseq(x=xss,start=i,end=i)),collapse="")
   }
   #<<<main manipulation end<<<
   rm(xss,l,i)
