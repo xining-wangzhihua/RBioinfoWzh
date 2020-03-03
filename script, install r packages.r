@@ -23,21 +23,22 @@ l.phylo.and.bioinfo=c("ape","haplo.stats","phylobase","seqinr")#doesn't include 
 l.geography=c("mapdata","mapproj","maps","maptools","OpenStreetMap","rgeos","sf")
 
 
-l.ans=c(l.common, l.phylo.and.bioinfo, l.geography)
-l.ans=setdiff(x=l.ans,y=rownames(installed.packages()))
-install.packages(pkgs=l.ans)
-rm(l.ans)
+l.common           =setdiff(x=l.common,           y=rownames(installed.packages()))
+l.phylo.and.bioinfo=setdiff(x=l.phylo.and.bioinfo,y=rownames(installed.packages()))
+l.geography        =setdiff(x=l.geography,        y=rownames(installed.packages()))
+if(length(c( l.common, l.phylo.and.bioinfo, l.geography ))>0){
+  install.packages(pkgs=c( l.common, l.phylo.and.bioinfo, l.geography ))
+}
 #
-if(!require(BiocManager)){
+if( ! "BiocManager" %in% rownames(installed.packages()) ){
   install.packages(pkgs="BiocManager")
 }
-l.ans=setdiff(x=l.bioconductor,y=rownames(installed.packages()))
-if(length(l.ans)>0){BiocManager::install(pkgs=l.ans);}
-rm(l.ans)
+l.bioconductor=setdiff(x=l.bioconductor,y=rownames(installed.packages()))
+if(length(l.bioconductor)>0){BiocManager::install(pkgs=l.bioconductor);}
 #
 if(FALSE){
   l.rare=setdiff(x=l.rare,y=rownames(installed.packages()))
-  install.packages(pkgs=l.rare)
+  if(length(l.rare)>0){install.packages(pkgs=l.rare);}
 }
 
 
