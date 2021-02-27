@@ -1,19 +1,20 @@
 RPhylogenyZM
 
-r funtions and scripts for phylogeny, written when the authour worked in nwipbcslzm.
-the authour was a novice, so the robustness and effectiveness of the codes are not guaranteed.
-there is no help file, nor documentation.
+This readme file is obsolete.
+
+R funtions and scripts for phylogeny.
+Since the authour is a novice, the robustness and effectiveness of the codes are not guaranteed.
+There is no help files, nor documentation.
 
 major functions are:
 get.haplotype.and.genotype.from.dnasp.nex().r
 generate.input.for.permut().r
 generate.arp.input.for.arlequin().r
 
-names of lower-level functions (usually) begin with "."
-
 the package dependencies of these functions are:
-ape, magrittr, seqinr, stringr, tibble
-BiocManager, Biobase, Biostrings
+ape, magrittr, seqinr, stringr, tibble,
+BiocManager, Biobase, Biostrings,
+etc
 
 codes to install these dependencies:
 with(
