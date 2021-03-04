@@ -6,7 +6,7 @@ library(Biostrings)
 library(ape)
 library(magrittr)
 
-as.DNAStringSet=function(dnabin){
+as.DNAStringSet.DNAbin <- function(dnabin){
   #>>>control the input of dnabin begin>>>
   if(!is(object=dnabin,class2="DNAbin")){stop("dnabin must be an DNAbin object defined by ape.");}
   if(is.matrix(dnabin)){dnabin=as.list(dnabin);}
