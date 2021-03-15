@@ -1,25 +1,19 @@
 RPhylogenyZM
 
-This readme file is obsolete.
-
 R funtions and scripts for phylogeny.
-Since the authour is a novice, the robustness and effectiveness of the codes are not guaranteed.
-There is no help files, nor documentation.
+The robustness and effectiveness of the codes are not guaranteed.
 
 major functions are:
-get.haplotype.and.genotype.from.dnasp.nex().r
-generate.input.for.permut().r
-generate.arp.input.for.arlequin().r
+step*().r and {1~5}*().r
 
-the package dependencies of these functions are:
-ape, magrittr, seqinr, stringr, tibble,
-BiocManager, Biobase, Biostrings,
-etc
+the package dependencies of these functions are (not completed):
+magrittr, tibble, dplyr, stringr, purrr,
+BiocManager, IRanges, Biostrings, ape, seqinr, pegas.
 
-codes to install these dependencies:
+codes to install these dependencies (not completed):
 with(
-  data = list(a = c("ape", "gdata", "magrittr", "readxl", "seqinr", "stringr", "tibble", "XML", "xml2"),
-              b = c("Biobase", "Biostrings")),
+  data = list(a = c("magrittr", "tibble", "dplyr", "stringr", "purrr"),
+              b = c("IRanges", "Biostrings")),
   expr = {
     for(i in c(a,"BiocManager")) if(!require(i, character.only=TRUE)){install.packages(pkgs=i);}
     if(!require(BiocManager, character.only=FALSE)){stop("bug");}
