@@ -1,6 +1,6 @@
 RPhylogenyZM
 
-R funtions and scripts for phylogeny.
+Some r funtions and scripts for phylogeny, written when the author works at nwipb csl (computational science laboratory).
 The robustness and effectiveness of the codes are not guaranteed.
 
 major functions are:
